@@ -12,7 +12,7 @@ const generateDevices = (platformId: string, count: number) => {
     id: `${platformId}-device-${i + 1}`,
     name: `${platformId === 'tiktok' ? 'TikTok' : 'Twitter'} Phone ${i + 1}`,
     platform: platformId,
-    status: Math.random() > 0.3 ? 'online' : 'offline',
+    status: Math.random() > 0.3 ? 'online' as const : 'offline' as const,
     uptime: Math.floor(Math.random() * 48) + 1,
     lastActive: new Date(Date.now() - Math.floor(Math.random() * 60 * 60 * 1000)).toISOString(),
     tasks: Math.floor(Math.random() * 100),
