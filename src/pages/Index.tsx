@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PlusCircle, Settings, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -37,13 +38,17 @@ const Index = () => {
             </p>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm">
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Statistik
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/statistics">
+                <BarChart3 className="h-4 w-4 mr-2" />
+                Statistik
+              </Link>
             </Button>
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Pengaturan
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/account">
+                <Settings className="h-4 w-4 mr-2" />
+                Pengaturan
+              </Link>
             </Button>
             <Button size="sm" onClick={handleAddDevice}>
               <PlusCircle className="h-4 w-4 mr-2" />

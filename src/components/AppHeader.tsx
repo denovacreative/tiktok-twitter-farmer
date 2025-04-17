@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Bell, Moon, Sun, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -8,6 +9,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 const AppHeader = () => {
   const [darkMode, setDarkMode] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -16,11 +18,18 @@ const AppHeader = () => {
 
   const navItems = [
     { name: 'Dashboard', href: '/' },
-    { name: 'Perangkat', href: '#' },
-    { name: 'Akun', href: '#' },
-    { name: 'Statistik', href: '#' },
-    { name: 'Bantuan', href: '#' },
+    { name: 'Perangkat', href: '/devices' },
+    { name: 'Akun', href: '/account' },
+    { name: 'Statistik', href: '/statistics' },
+    { name: 'Bantuan', href: '/help' },
   ];
+
+  // Helper to check if a nav item is active
+  const isActive = (path: string) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
 
   return (
     <header className="sticky top-0 z-30 w-full border-b bg-background">
@@ -37,31 +46,35 @@ const AppHeader = () => {
               <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
                   {navItems.map((item, index) => (
-                    <a
+                    <Link
                       key={index}
-                      href={item.href}
-                      className="flex w-full items-center rounded-md px-3 py-2 hover:bg-muted"
+                      to={item.href}
+                      className={`flex w-full items-center rounded-md px-3 py-2 hover:bg-muted ${
+                        isActive(item.href) ? 'bg-muted font-semibold' : ''
+                      }`}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </SheetContent>
             </Sheet>
           )}
-          <a className="flex items-center space-x-2" href="/">
+          <Link className="flex items-center space-x-2" to="/">
             <span className="font-bold text-xl">PhoneFarm</span>
-          </a>
+          </Link>
           {!isMobile && (
             <nav className="flex items-center space-x-4 lg:space-x-6 ml-6">
               {navItems.map((item, index) => (
-                <a
+                <Link
                   key={index}
-                  href={item.href}
-                  className="text-sm font-medium transition-colors hover:text-primary"
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActive(item.href) ? 'text-primary font-semibold' : 'text-muted-foreground'
+                  }`}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </nav>
           )}

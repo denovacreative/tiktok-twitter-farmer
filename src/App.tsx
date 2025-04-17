@@ -7,6 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ScreenMirrorPage from "./pages/ScreenMirrorPage";
+import DevicesPage from "./pages/Devices";
+import AccountPage from "./pages/Account";
+import StatisticsPage from "./pages/Statistics";
+import HelpPage from "./pages/Help";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +22,10 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/devices" element={<DevicesPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/statistics" element={<StatisticsPage />} />
+          <Route path="/help" element={<HelpPage />} />
           <Route path="/device/:deviceId/mirror" element={<ScreenMirrorPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
