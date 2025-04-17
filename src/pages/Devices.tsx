@@ -6,20 +6,47 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import AppHeader from '@/components/AppHeader';
 import DeviceGrid from '@/components/DeviceGrid';
+import AddDeviceDialog from '@/components/AddDeviceDialog';
+import AddPlatformDialog from '@/components/AddPlatformDialog';
+import { Link } from 'react-router-dom';
 
-// Dummy data untuk platform
-const PLATFORMS = [
+// Data awal untuk platform
+const initialPlatforms = [
   { id: 'tiktok', name: 'TikTok', color: 'bg-pink-500', devices: 12, online: 8 },
   { id: 'twitter', name: 'Twitter', color: 'bg-blue-500', devices: 8, online: 5 },
 ];
 
 const DevicesPage = () => {
-  const [selectedPlatform, setSelectedPlatform] = useState(PLATFORMS[0].id);
+  const [platforms, setPlatforms] = useState(initialPlatforms);
+  const [selectedPlatform, setSelectedPlatform] = useState(platforms[0].id);
+  const [devices, setDevices] = useState<any[]>([]);
 
-  const handleAddDevice = () => {
+  const handleAddPlatform = (newPlatform: any) => {
+    setPlatforms([...platforms, newPlatform]);
     toast({
-      title: "Fitur akan datang",
-      description: "Fungsi untuk menambahkan perangkat akan segera tersedia",
+      title: "Platform berhasil ditambahkan",
+      description: `Platform ${newPlatform.name} telah ditambahkan ke sistem`,
+    });
+  };
+
+  const handleAddDevice = (newDevice: any) => {
+    setDevices([...devices, newDevice]);
+    
+    // Update platform device count
+    setPlatforms(platforms.map(platform => {
+      if (platform.id === newDevice.platform) {
+        return {
+          ...platform,
+          devices: platform.devices + 1,
+          online: newDevice.status === 'online' ? platform.online + 1 : platform.online
+        };
+      }
+      return platform;
+    }));
+
+    toast({
+      title: "Perangkat berhasil ditambahkan",
+      description: `Perangkat ${newDevice.name} telah ditambahkan ke sistem`,
     });
   };
 
@@ -36,32 +63,37 @@ const DevicesPage = () => {
             </p>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm">
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Statistik
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/statistics">
+                <BarChart3 className="h-4 w-4 mr-2" />
+                Statistik
+              </Link>
             </Button>
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Pengaturan
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/account">
+                <Settings className="h-4 w-4 mr-2" />
+                Pengaturan
+              </Link>
             </Button>
-            <Button size="sm" onClick={handleAddDevice}>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Tambah Perangkat
-            </Button>
+            <AddPlatformDialog onAddPlatform={handleAddPlatform} />
+            <AddDeviceDialog platforms={platforms} onAddDevice={handleAddDevice} />
           </div>
         </div>
 
         <Tabs value={selectedPlatform} onValueChange={setSelectedPlatform} className="mb-8">
           <TabsList>
-            {PLATFORMS.map((platform) => (
+            {platforms.map((platform) => (
               <TabsTrigger key={platform.id} value={platform.id}>
                 {platform.name}
               </TabsTrigger>
             ))}
           </TabsList>
-          {PLATFORMS.map((platform) => (
+          {platforms.map((platform) => (
             <TabsContent key={platform.id} value={platform.id}>
-              <DeviceGrid platformId={platform.id} />
+              <DeviceGrid 
+                platformId={platform.id} 
+                customDevices={devices.filter(d => d.platform === platform.id)} 
+              />
             </TabsContent>
           ))}
         </Tabs>

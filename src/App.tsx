@@ -11,6 +11,7 @@ import DevicesPage from "./pages/Devices";
 import AccountPage from "./pages/Account";
 import StatisticsPage from "./pages/Statistics";
 import HelpPage from "./pages/Help";
+import DeviceControlPage from "./pages/DeviceControlPage";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/statistics" element={<StatisticsPage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="/device/:deviceId/mirror" element={<ScreenMirrorPage />} />
+          <Route path="/device/:deviceId/control" element={<DeviceControlPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

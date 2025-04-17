@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Smartphone, Battery, Clock, Wifi, WifiOff, MoreVertical, MonitorSmartphone } from 'lucide-react';
+import { Smartphone, Battery, Clock, Wifi, WifiOff, MoreVertical, MonitorSmartphone, Gamepad2 } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -53,14 +53,34 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device }) => {
     navigate(`/device/${device.id}/mirror`);
   };
 
+  const handleControl = () => {
+    navigate(`/device/${device.id}/control`);
+  };
+
+  const getPlatformColor = (platform: string) => {
+    switch (platform) {
+      case 'tiktok': return 'bg-pink-500';
+      case 'twitter': return 'bg-blue-500';
+      default: return 'bg-purple-500';
+    }
+  };
+
   const statusColor = device.status === 'online' 
-    ? device.platform === 'tiktok' ? 'bg-pink-500' : 'bg-blue-500' 
+    ? getPlatformColor(device.platform)
     : 'bg-gray-400';
 
   const batteryColor = 
     device.battery > 70 ? 'bg-green-500' : 
     device.battery > 30 ? 'bg-yellow-500' : 
     'bg-red-500';
+
+  const getPlatformName = (platform: string) => {
+    switch (platform) {
+      case 'tiktok': return 'TikTok';
+      case 'twitter': return 'Twitter';
+      default: return platform.charAt(0).toUpperCase() + platform.slice(1);
+    }
+  };
 
   return (
     <Card className="overflow-hidden">
@@ -90,6 +110,10 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device }) => {
             <DropdownMenuItem onClick={handleScreenMirror}>
               <MonitorSmartphone className="h-4 w-4 mr-2" />
               Screen Mirror
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleControl}>
+              <Gamepad2 className="h-4 w-4 mr-2" />
+              Control Panel
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleAction("Restart")}>Restart</DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleAction("Settings")}>Pengaturan</DropdownMenuItem>
@@ -154,8 +178,9 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device }) => {
             variant="outline" 
             size="sm" 
             className="w-1/2 text-xs"
-            onClick={() => handleAction("Control")}
+            onClick={handleControl}
           >
+            <Gamepad2 className="h-3 w-3 mr-1" />
             Control
           </Button>
           <Button 

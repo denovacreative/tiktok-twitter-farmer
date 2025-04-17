@@ -8,20 +8,46 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { toast } from '@/hooks/use-toast';
 import AppHeader from '@/components/AppHeader';
 import DeviceGrid from '@/components/DeviceGrid';
+import AddDeviceDialog from '@/components/AddDeviceDialog';
+import AddPlatformDialog from '@/components/AddPlatformDialog';
 
-// Dummy data untuk platform
-const PLATFORMS = [
+// Data awal untuk platform
+const initialPlatforms = [
   { id: 'tiktok', name: 'TikTok', color: 'bg-pink-500', devices: 12, online: 8 },
   { id: 'twitter', name: 'Twitter', color: 'bg-blue-500', devices: 8, online: 5 },
 ];
 
 const Index = () => {
-  const [selectedPlatform, setSelectedPlatform] = useState(PLATFORMS[0].id);
+  const [platforms, setPlatforms] = useState(initialPlatforms);
+  const [selectedPlatform, setSelectedPlatform] = useState(platforms[0].id);
+  const [devices, setDevices] = useState<any[]>([]);
 
-  const handleAddDevice = () => {
+  const handleAddPlatform = (newPlatform: any) => {
+    setPlatforms([...platforms, newPlatform]);
     toast({
-      title: "Fitur akan datang",
-      description: "Fungsi untuk menambahkan perangkat akan segera tersedia",
+      title: "Platform berhasil ditambahkan",
+      description: `Platform ${newPlatform.name} telah ditambahkan ke sistem`,
+    });
+  };
+
+  const handleAddDevice = (newDevice: any) => {
+    setDevices([...devices, newDevice]);
+    
+    // Update platform device count
+    setPlatforms(platforms.map(platform => {
+      if (platform.id === newDevice.platform) {
+        return {
+          ...platform,
+          devices: platform.devices + 1,
+          online: newDevice.status === 'online' ? platform.online + 1 : platform.online
+        };
+      }
+      return platform;
+    }));
+
+    toast({
+      title: "Perangkat berhasil ditambahkan",
+      description: `Perangkat ${newDevice.name} telah ditambahkan ke sistem`,
     });
   };
 
@@ -50,15 +76,13 @@ const Index = () => {
                 Pengaturan
               </Link>
             </Button>
-            <Button size="sm" onClick={handleAddDevice}>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Tambah Perangkat
-            </Button>
+            <AddPlatformDialog onAddPlatform={handleAddPlatform} />
+            <AddDeviceDialog platforms={platforms} onAddDevice={handleAddDevice} />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {PLATFORMS.map((platform) => (
+          {platforms.map((platform) => (
             <Card key={platform.id} className="shadow-sm">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg font-medium">{platform.name}</CardTitle>
@@ -75,7 +99,7 @@ const Index = () => {
                       <span className="text-sm">Aktif</span>
                     </div>
                   </div>
-                  <div className="text-2xl font-bold">{Math.round((platform.online / platform.devices) * 100)}%</div>
+                  <div className="text-2xl font-bold">{Math.round((platform.online / platform.devices) * 100) || 0}%</div>
                 </div>
               </CardContent>
               <CardFooter>
@@ -89,15 +113,18 @@ const Index = () => {
 
         <Tabs value={selectedPlatform} onValueChange={setSelectedPlatform} className="mb-8">
           <TabsList>
-            {PLATFORMS.map((platform) => (
+            {platforms.map((platform) => (
               <TabsTrigger key={platform.id} value={platform.id}>
                 {platform.name}
               </TabsTrigger>
             ))}
           </TabsList>
-          {PLATFORMS.map((platform) => (
+          {platforms.map((platform) => (
             <TabsContent key={platform.id} value={platform.id}>
-              <DeviceGrid platformId={platform.id} />
+              <DeviceGrid 
+                platformId={platform.id} 
+                customDevices={devices.filter(d => d.platform === platform.id)} 
+              />
             </TabsContent>
           ))}
         </Tabs>
