@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { Smartphone, Battery, Clock, Wifi, WifiOff, MoreVertical } from 'lucide-react';
+import { Smartphone, Battery, Clock, Wifi, WifiOff, MoreVertical, MonitorSmartphone } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { useNavigate } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +33,8 @@ interface DeviceCardProps {
 }
 
 const DeviceCard: React.FC<DeviceCardProps> = ({ device }) => {
+  const navigate = useNavigate();
+  
   const formatTime = (date: string) => {
     return new Date(date).toLocaleTimeString('id-ID', {
       hour: '2-digit',
@@ -44,6 +47,10 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device }) => {
       title: `${action} ${device.name}`,
       description: "Fitur ini akan segera tersedia",
     });
+  };
+
+  const handleScreenMirror = () => {
+    navigate(`/device/${device.id}/mirror`);
   };
 
   const statusColor = device.status === 'online' 
@@ -80,6 +87,10 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Opsi Perangkat</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleScreenMirror}>
+              <MonitorSmartphone className="h-4 w-4 mr-2" />
+              Screen Mirror
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleAction("Restart")}>Restart</DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleAction("Settings")}>Pengaturan</DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleAction("Details")}>Lihat Detail</DropdownMenuItem>
@@ -138,14 +149,25 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device }) => {
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="w-full text-xs"
-          onClick={() => handleAction("Control")}
-        >
-          Control Device
-        </Button>
+        <div className="w-full flex space-x-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-1/2 text-xs"
+            onClick={() => handleAction("Control")}
+          >
+            Control
+          </Button>
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="w-1/2 text-xs"
+            onClick={handleScreenMirror}
+          >
+            <MonitorSmartphone className="h-3 w-3 mr-1" />
+            Mirror
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
