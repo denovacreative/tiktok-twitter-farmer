@@ -1,97 +1,82 @@
-
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Bell, Moon, Sun, Menu } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Bell, Menu, User, LogOut, Settings, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+// Import komponen ConnectionStatus
+import ConnectionStatus from './ConnectionStatus';
 
 const AppHeader = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const isMobile = useIsMobile();
-  const location = useLocation();
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
-  };
-
-  const navItems = [
-    { name: 'Dashboard', href: '/' },
-    { name: 'Perangkat', href: '/devices' },
-    { name: 'Akun', href: '/account' },
-    { name: 'Statistik', href: '/statistics' },
-    { name: 'Bantuan', href: '/help' },
-  ];
-
-  // Helper to check if a nav item is active
-  const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path !== '/' && location.pathname.startsWith(path)) return true;
-    return false;
-  };
-
   return (
-    <header className="sticky top-0 z-30 w-full border-b bg-background">
-      <div className="container flex h-16 items-center px-4">
-        <div className="flex items-center space-x-4">
-          {isMobile && (
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <nav className="grid gap-6 text-lg font-medium">
-                  {navItems.map((item, index) => (
-                    <Link
-                      key={index}
-                      to={item.href}
-                      className={`flex w-full items-center rounded-md px-3 py-2 hover:bg-muted ${
-                        isActive(item.href) ? 'bg-muted font-semibold' : ''
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </nav>
-              </SheetContent>
-            </Sheet>
-          )}
-          <Link className="flex items-center space-x-2" to="/">
-            <span className="font-bold text-xl">PhoneFarm</span>
+    <header className="border-b">
+      <div className="container flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-4">
+          <Link to="/">
+            <div className="flex items-center gap-2">
+              <Smartphone className="h-6 w-6" />
+              <span className="text-lg font-semibold">Phone Farm</span>
+            </div>
           </Link>
-          {!isMobile && (
-            <nav className="flex items-center space-x-4 lg:space-x-6 ml-6">
-              {navItems.map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActive(item.href) ? 'text-primary font-semibold' : 'text-muted-foreground'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-          )}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
+              Dashboard
+            </Link>
+            <Link to="/devices" className="text-sm font-medium transition-colors hover:text-primary">
+              Perangkat
+            </Link>
+            <Link to="/statistics" className="text-sm font-medium transition-colors hover:text-primary">
+              Statistik
+            </Link>
+            <Link to="/help" className="text-sm font-medium transition-colors hover:text-primary">
+              Bantuan
+            </Link>
+          </nav>
         </div>
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <Button variant="ghost" size="icon">
-            <Bell className="h-5 w-5" />
-            <span className="sr-only">Notifikasi</span>
-          </Button>
-          <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
-            {darkMode ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-            <span className="sr-only">Toggle tema</span>
-          </Button>
+        <div className="flex items-center gap-4">
+          {/* Tambahkan komponen ConnectionStatus */}
+          <ConnectionStatus />
+          
+          <div className="relative">
+            <Button variant="outline" size="icon">
+              <Bell className="h-5 w-5" />
+              <span className="sr-only">Notifikasi</span>
+            </Button>
+            <div className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500" />
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link to="/account">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profil</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/settings">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Pengaturan</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Keluar</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
