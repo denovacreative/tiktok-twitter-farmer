@@ -1,9 +1,8 @@
-
 /**
- * Service untuk menghubungkan aplikasi dengan backend API
+ * Service untuk menghubungkan aplikasi dengan backend API Rust
  */
 
-const API_BASE_URL = "http://localhost:3000/api"; // Ganti dengan URL backend Anda
+const API_BASE_URL = "http://127.0.0.1:8000/api"; // URL untuk backend Rust
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -12,7 +11,7 @@ export interface ApiResponse<T> {
 }
 
 /**
- * Fungsi untuk melakukan fetch ke API
+ * Fungsi untuk melakukan fetch ke API Rust
  */
 async function fetchApi<T>(
   endpoint: string,
@@ -22,6 +21,7 @@ async function fetchApi<T>(
   try {
     const headers: HeadersInit = {
       "Content-Type": "application/json",
+      "Accept": "application/json"
     };
 
     // Tambahkan token autentikasi jika tersedia
@@ -41,7 +41,7 @@ async function fetchApi<T>(
     if (!response.ok) {
       return {
         success: false,
-        error: data.message || "Terjadi kesalahan pada server",
+        error: data.message || "Terjadi kesalahan pada server Rust",
       };
     }
 
@@ -95,6 +95,13 @@ export async function updateDeviceStatus(deviceId: string, status: "online" | "o
 }
 
 /**
+ * Fungsi untuk mendapatkan status server backend Rust
+ */
+export async function checkServerStatus() {
+  return fetchApi<{ status: string }>("/status");
+}
+
+/**
  * Fungsi untuk login
  */
 export async function login(username: string, password: string) {
@@ -116,4 +123,3 @@ export async function login(username: string, password: string) {
 export function logout() {
   localStorage.removeItem("auth_token");
 }
-

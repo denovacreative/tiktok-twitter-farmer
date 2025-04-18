@@ -3,20 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { Wifi, WifiOff } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
-const API_URL = "http://localhost:3000/api/status"; // Ganti dengan URL endpoint status backend Anda
+// URL API untuk backend Rust - ganti dengan URL yang benar saat backend Rust sudah berjalan
+const API_URL = "http://127.0.0.1:8000/api/status"; 
 
 const ConnectionStatus: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isChecking, setIsChecking] = useState<boolean>(true);
 
-  // Periksa koneksi ke backend
+  // Periksa koneksi ke backend Rust
   const checkConnection = async () => {
     try {
       setIsChecking(true);
       const response = await fetch(API_URL, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
 
@@ -51,13 +53,13 @@ const ConnectionStatus: React.FC = () => {
     if (!isChecking) {
       if (isConnected) {
         toast({
-          title: "Terhubung ke Server",
-          description: "Aplikasi berhasil terhubung ke server backend",
+          title: "Terhubung ke Server Rust",
+          description: "Aplikasi berhasil terhubung ke server backend Rust",
         });
       } else {
         toast({
           title: "Koneksi Terputus",
-          description: "Tidak dapat terhubung ke server backend. Data mungkin tidak terbarui.",
+          description: "Tidak dapat terhubung ke server backend Rust. Data mungkin tidak terbarui.",
           variant: "destructive",
         });
       }

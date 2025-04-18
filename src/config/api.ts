@@ -1,0 +1,38 @@
+
+/**
+ * Konfigurasi API untuk backend Rust
+ */
+
+// URL dasar untuk backend Rust
+export const API_BASE_URL = "http://127.0.0.1:8000/api";
+
+// URL untuk memeriksa status koneksi
+export const API_STATUS_URL = `${API_BASE_URL}/status`;
+
+// Timeout untuk request API (dalam milidetik)
+export const API_TIMEOUT = 10000;
+
+// Header default untuk request API
+export const DEFAULT_HEADERS = {
+  "Content-Type": "application/json",
+  "Accept": "application/json"
+};
+
+// Endpoint API
+export const API_ENDPOINTS = {
+  // Auth
+  LOGIN: "/auth/login",
+  LOGOUT: "/auth/logout",
+  
+  // Platforms
+  PLATFORMS: "/platforms",
+  PLATFORM_BY_ID: (id: string) => `/platforms/${id}`,
+  
+  // Devices
+  DEVICES: "/devices",
+  DEVICE_BY_ID: (id: string) => `/devices/${id}`,
+  DEVICE_STATUS: (id: string) => `/devices/${id}/status`,
+  
+  // Statistics
+  STATISTICS: "/statistics",
+};
