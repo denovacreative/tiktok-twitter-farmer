@@ -12,6 +12,7 @@ import AccountPage from "./pages/Account";
 import StatisticsPage from "./pages/Statistics";
 import HelpPage from "./pages/Help";
 import DeviceControlPage from "./pages/DeviceControlPage";
+import Settings from "./pages/Settings"; // Import the Settings component
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/devices" element={<DevicesPage />} />
           <Route path="/account" element={<AccountPage />} />
-          <Route path="/settings" element={<Settings />} /> {/* Tambahkan rute settings */}
+          <Route path="/settings" element={<Settings />} />
           <Route path="/statistics" element={<StatisticsPage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="/device/:deviceId/mirror" element={<ScreenMirrorPage />} />
