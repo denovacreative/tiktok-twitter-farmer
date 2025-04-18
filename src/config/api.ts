@@ -1,4 +1,3 @@
-
 /**
  * Konfigurasi API untuk backend Rust
  */
@@ -35,4 +34,10 @@ export const API_ENDPOINTS = {
   
   // Statistics
   STATISTICS: "/statistics",
+  
+  // Settings
+  CHECK_UPDATE: "/check-update",
+  PLATFORM_SETTINGS: "/platform-settings",
+  BOT_SETTINGS: "/bot-settings",
+  SAVE_BOT_SETTINGS: "/bot-settings/save",
 };

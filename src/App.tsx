@@ -25,11 +25,11 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/devices" element={<DevicesPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/settings" element={<Settings />} /> {/* Tambahkan rute settings */}
           <Route path="/statistics" element={<StatisticsPage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="/device/:deviceId/mirror" element={<ScreenMirrorPage />} />
           <Route path="/device/:deviceId/control" element={<DeviceControlPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
