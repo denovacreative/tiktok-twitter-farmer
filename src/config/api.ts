@@ -40,4 +40,10 @@ export const API_ENDPOINTS = {
   PLATFORM_SETTINGS: "/platform-settings",
   BOT_SETTINGS: "/bot-settings",
   SAVE_BOT_SETTINGS: "/bot-settings/save",
+  
+  // Tasks
+  DEVICE_TASKS: (deviceId: string) => `/devices/${deviceId}/tasks`,
+  TASK_STATUS: (deviceId: string, taskId: string) => `/devices/${deviceId}/tasks/${taskId}`,
+  START_TASK: (deviceId: string) => `/devices/${deviceId}/tasks/start`,
+  STOP_TASK: (deviceId: string) => `/devices/${deviceId}/tasks/stop`,
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Power, RefreshCw, Smartphone, Zap, WifiOff, Settings, PlayCircle, PauseCircle } from 'lucide-react';
@@ -7,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from '@/components/ui/separator';
 import AppHeader from '@/components/AppHeader';
 import { toast } from '@/hooks/use-toast';
+import AutomatedTasks from '@/components/device/AutomatedTasks';
 
 // Komponen untuk tombol kontrol
 const ControlButton = ({ icon, label, onClick, variant = "outline" }: { 
@@ -179,6 +179,10 @@ const DeviceControlPage = () => {
               </Button>
             </CardFooter>
           </Card>
+          
+          <div className="md:col-span-3">
+            <AutomatedTasks deviceId={deviceId || ''} />
+          </div>
         </div>
       </main>
     </div>
