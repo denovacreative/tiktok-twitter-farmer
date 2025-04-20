@@ -1,3 +1,4 @@
+
 /**
  * Konfigurasi API untuk backend Rust
  */
@@ -36,10 +37,16 @@ export const API_ENDPOINTS = {
   STATISTICS: "/statistics",
   
   // Settings
+  CHECK_VERSION: "/version",
   CHECK_UPDATE: "/check-update",
+  INSTALL_UPDATE: "/install-update",
   PLATFORM_SETTINGS: "/platform-settings",
   BOT_SETTINGS: "/bot-settings",
   SAVE_BOT_SETTINGS: "/bot-settings/save",
+  
+  // ADB Driver
+  CHECK_ADB_DRIVER: "/adb/status",
+  INSTALL_ADB_DRIVER: "/adb/install",
   
   // Tasks
   DEVICE_TASKS: (deviceId: string) => `/devices/${deviceId}/tasks`,
